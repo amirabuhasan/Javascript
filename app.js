@@ -1,11 +1,42 @@
 // Create Dino Constructor
 function Dino(traits) {
-  function get(trait) {
-    return traits[trait];
+  const { height, weight, diet } = traits;
+  function compareHeight(heightToCompare) {
+    const heightDiff = height - heightToCompare;
+    switch (heightDiff) {
+      case heightDiff > 0:
+        return 'I am taller than you!';
+      case heightDiff < 0:
+        return 'I am shorter than you!';
+      case heightDiff === 0:
+        return 'We are the same height!';
+      default:
+        new Error('Invalid value passed in as an argument for compareHeight');
+    }
+  }
+  function compareWeight(weightToCompare) {
+    const weightDiff = weight - weightToCompare;
+    switch (weightDiff) {
+      case weightDiff > 0:
+        return 'I weigh more than you!';
+      case weightDiff < 0:
+        return 'You weight more than me!';
+      case weightDiff === 0:
+        return 'We weigh the same!';
+      default:
+        new Error('Invalid value passed in as an argument for compareWeight');
+    }
+  }
+  function compareDiet(dietToCompare) {
+    return dietToCompare === diet
+      ? `We are both ${diet}`
+      : `I am a ${diet}, while you are a ${dietToCompare}`;
   }
   return {
     ...traits,
-    get
+    compareHeight,
+    compareWeight,
+    compareDiet
   };
 }
 
