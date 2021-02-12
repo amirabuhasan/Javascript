@@ -78,7 +78,8 @@ function getHumanData() {
       name,
       height,
       weight,
-      diet
+      diet,
+      species: 'human'
     };
   })();
 }
@@ -92,14 +93,21 @@ function getHumanData() {
 // NOTE: Weight in JSON file is in lbs, height in inches.
 
 // Generate Tiles for each Dino in Array
-function generateTile(dino, human) {
-  const dinoElement = document.createElement('div');
-  dinoElement.className = 'grid-item';
-  dinoElement.innerHTML = `
-    <h3>${dino.species}</h3>
-    <img src="images/${dino.species.toLowerCase()}.png" alt="image of ${dino.species}"/>
-    <p>${dino.generateFact(human)}</p>
+function generateTile(obj) {
+  const element = document.createElement('div');
+  element.className = 'grid-item';
+  element.innerHTML = `
+    <h3>${obj.species}</h3>
+    <img src="images/${obj.species.toLowerCase()}.png" alt="image of ${obj.species}"/>
     `;
+  return element;
+}
+
+function generateDinoTile(dino, human) {
+  const dinoElement = generateTile(dino);
+  const factElement = document.createElement('p');
+  factElement.innerHTML = dino.generateFact(human);
+  dinoElement.appendChild(factElement);
   return dinoElement;
 }
 
@@ -108,9 +116,11 @@ function addTilesToDom() {
   const human = getHumanData();
   const gridElement = document.getElementById('grid');
   dinos.forEach(d => {
-    const dinoElement = generateTile(d, human);
+    const dinoElement = generateDinoTile(d, human);
     gridElement.appendChild(dinoElement);
   });
+  const humanElement = generateTile(human);
+  gridElement.insertBefore(humanElement, gridElement.children[4]);
 }
 
 // Remove form from screen
