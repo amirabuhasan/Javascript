@@ -1,8 +1,24 @@
 // Create Dino Constructor
+function Dino(traits) {
+  function get(trait) {
+    return traits[trait];
+  }
+  return {
+    ...traits,
+    get
+  };
+}
 
 // Create Dino Objects
+let dinos = [];
 
-// Create Human Object
+const createDinos = (async function() {
+  const response = await fetch('./dino.json');
+  const { Dinos } = await response.json();
+  Dinos.forEach(d => {
+    dinos = [...dinos, new Dino(d)];
+  });
+})();
 
 // Use IIFE to get human data from form
 
