@@ -1,42 +1,56 @@
 // Create Dino Constructor
 function Dino(traits) {
-  const { height, weight, diet } = traits;
+  const { height, weight, diet, species, fact, where, when } = traits;
   function compareHeight(heightToCompare) {
     const heightDiff = height - heightToCompare;
-    switch (heightDiff) {
-      case heightDiff > 0:
-        return 'I am taller than you!';
-      case heightDiff < 0:
-        return 'I am shorter than you!';
-      case heightDiff === 0:
-        return 'We are the same height!';
-      default:
-        new Error('Invalid value passed in as an argument for compareHeight');
+    if (heightDiff > 0) {
+      return 'I am taller than you!';
+    } else if (heightDiff < 0) {
+      return 'I am shorter than you!';
+    } else if (heightDiff === 0) {
+      return 'We are the same height!';
     }
+    throw 'Invalid value passed in as an argument for compareHeight';
   }
   function compareWeight(weightToCompare) {
     const weightDiff = weight - weightToCompare;
-    switch (weightDiff) {
-      case weightDiff > 0:
-        return 'I weigh more than you!';
-      case weightDiff < 0:
-        return 'You weight more than me!';
-      case weightDiff === 0:
-        return 'We weigh the same!';
-      default:
-        new Error('Invalid value passed in as an argument for compareWeight');
+    if (weightDiff > 0) {
+      return 'I weigh more than you!';
+    } else if (weightDiff < 0) {
+      return 'You weight more than me!';
+    } else if (weightDiff === 0) {
+      return 'We weigh the same!';
     }
+    throw 'Invalid value passed in as an argument for compareWeight';
   }
   function compareDiet(dietToCompare) {
     return dietToCompare === diet
-      ? `We are both ${diet}`
-      : `I am a ${diet}, while you are a ${dietToCompare}`;
+      ? `We are both ${diet}s!`
+      : `I am a ${diet}, while you are a ${dietToCompare}.`;
+  }
+  function generateFact(human) {
+    if (species === 'Pigeon') {
+      return fact;
+    }
+    const factIndex = Math.floor(Math.random() * 6);
+    switch (factIndex) {
+      case 0:
+        return `I used to live in ${where}.`;
+      case 1:
+        return `I used to be found during the ${when} period.`;
+      case 2:
+        return compareDiet(human.diet);
+      case 3:
+        return compareHeight(human.height);
+      case 4:
+        return compareWeight(human.weight);
+      default:
+        return fact;
+    }
   }
   return {
     ...traits,
-    compareHeight,
-    compareWeight,
-    compareDiet
+    generateFact
   };
 }
 
@@ -52,7 +66,22 @@ const createDinos = (async function() {
 })();
 
 // Use IIFE to get human data from form
-
+function getHumanData() {
+  return (function() {
+    const name = document.getElementById('name').value;
+    const feet = parseInt(document.getElementById('feet').value) || 0;
+    const inches = parseInt(document.getElementById('inches').value) || 0;
+    const weight = parseInt(document.getElementById('weight').value) || 0;
+    const diet = document.getElementById('diet').value;
+    const height = feet * 12 + inches;
+    return {
+      name,
+      height,
+      weight,
+      diet
+    };
+  })();
+}
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches.
 
@@ -63,9 +92,37 @@ const createDinos = (async function() {
 // NOTE: Weight in JSON file is in lbs, height in inches.
 
 // Generate Tiles for each Dino in Array
+function generateTile(dino, human) {
+  const dinoElement = document.createElement('div');
+  dinoElement.className = 'grid-item';
+  dinoElement.innerHTML = `
+    <h3>${dino.species}</h3>
+    <img src="images/${dino.species.toLowerCase()}.png" alt="image of ${dino.species}"/>
+    <p>${dino.generateFact(human)}</p>
+    `;
+  return dinoElement;
+}
 
 // Add tiles to DOM
+function addTilesToDom() {
+  const human = getHumanData();
+  const gridElement = document.getElementById('grid');
+  dinos.forEach(d => {
+    const dinoElement = generateTile(d, human);
+    gridElement.appendChild(dinoElement);
+  });
+}
 
 // Remove form from screen
+function removeFormFromSceen() {
+  const formElement = document.getElementById('dino-compare');
+  formElement.remove();
+}
+
+const buttonElement = document.getElementById('btn');
+buttonElement.addEventListener('click', () => {
+  addTilesToDom();
+  removeFormFromSceen();
+});
 
 // On button click, prepare and display infographic
