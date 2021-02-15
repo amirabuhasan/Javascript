@@ -54,16 +54,11 @@ function Dino(traits) {
   };
 }
 
-// Create Dino Objects
-let dinos = [];
-
-const createDinos = (async function() {
+async function createDinos() {
   const response = await fetch('./dino.json');
   const { Dinos } = await response.json();
-  Dinos.forEach(d => {
-    dinos = [...dinos, new Dino(d)];
-  });
-})();
+  return Dinos.map(d => Dino(d));
+}
 
 // Use IIFE to get human data from form
 function getHumanData() {
@@ -83,14 +78,6 @@ function getHumanData() {
     };
   })();
 }
-// Create Dino Compare Method 1
-// NOTE: Weight in JSON file is in lbs, height in inches.
-
-// Create Dino Compare Method 2
-// NOTE: Weight in JSON file is in lbs, height in inches.
-
-// Create Dino Compare Method 3
-// NOTE: Weight in JSON file is in lbs, height in inches.
 
 // Generate Tiles for each Dino in Array
 function generateTile(obj) {
@@ -112,8 +99,9 @@ function generateDinoTile(dino, human) {
 }
 
 // Add tiles to DOM
-function addTilesToDom() {
+async function addTilesToDom() {
   const human = getHumanData();
+  const dinos = await createDinos();
   const gridElement = document.getElementById('grid');
   dinos.forEach(d => {
     const dinoElement = generateDinoTile(d, human);
@@ -129,8 +117,8 @@ function removeFormFromSceen() {
   formElement.remove();
 }
 
-const buttonElement = document.getElementById('btn');
-buttonElement.addEventListener('click', () => {
+const buttonElement = document.getElementById('dino-compare');
+buttonElement.addEventListener('submit', () => {
   addTilesToDom();
   removeFormFromSceen();
 });
