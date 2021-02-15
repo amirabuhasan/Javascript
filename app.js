@@ -1,4 +1,4 @@
-// Create Dino Constructor
+// Dino Factory
 function Dino(traits) {
   const { height, weight, diet, species, fact, where, when } = traits;
   function compareHeight(heightToCompare) {
@@ -54,13 +54,14 @@ function Dino(traits) {
   };
 }
 
+// returns an array of Dino objects when invoked.
 async function createDinos() {
   const response = await fetch('./dino.json');
   const { Dinos } = await response.json();
   return Dinos.map(d => Dino(d));
 }
 
-// Use IIFE to get human data from form
+// Get human data from form
 function getHumanData() {
   return (function() {
     const name = document.getElementById('name').value;
@@ -79,7 +80,7 @@ function getHumanData() {
   })();
 }
 
-// Generate Tiles for each Dino in Array
+// Helper to generate each tile
 function generateTile(obj) {
   const element = document.createElement('div');
   element.className = 'grid-item';
@@ -90,6 +91,7 @@ function generateTile(obj) {
   return element;
 }
 
+// Uses the generateTile function, and appends a fact to the element that it returns
 function generateDinoTile(dino, human) {
   const dinoElement = generateTile(dino);
   const factElement = document.createElement('p');
@@ -117,10 +119,9 @@ function removeFormFromSceen() {
   formElement.remove();
 }
 
-const buttonElement = document.getElementById('dino-compare');
-buttonElement.addEventListener('submit', () => {
+// On submit form, prepare and display infographic
+const formElement = document.getElementById('dino-compare');
+formElement.addEventListener('submit', () => {
   addTilesToDom();
   removeFormFromSceen();
 });
-
-// On button click, prepare and display infographic
