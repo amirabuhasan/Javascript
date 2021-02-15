@@ -63,21 +63,19 @@ async function createDinos() {
 
 // Get human data from form
 function getHumanData() {
-  return (function () {
-    const name = document.getElementById('name').value;
-    const feet = parseInt(document.getElementById('feet').value) || 0;
-    const inches = parseInt(document.getElementById('inches').value) || 0;
-    const weight = parseInt(document.getElementById('weight').value) || 0;
-    const diet = document.getElementById('diet').value;
-    const height = feet * 12 + inches;
-    return {
-      name,
-      height,
-      weight,
-      diet,
-      species: 'human'
-    };
-  })();
+  const name = document.getElementById('name').value;
+  const feet = parseInt(document.getElementById('feet').value) || 0;
+  const inches = parseInt(document.getElementById('inches').value) || 0;
+  const weight = parseInt(document.getElementById('weight').value) || 0;
+  const diet = document.getElementById('diet').value;
+  const height = feet * 12 + inches;
+  return {
+    name,
+    height,
+    weight,
+    diet,
+    species: 'human'
+  };
 }
 
 // Helper to generate each tile
