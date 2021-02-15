@@ -63,7 +63,7 @@ async function createDinos() {
 
 // Get human data from form
 function getHumanData() {
-  return (function() {
+  return (function () {
     const name = document.getElementById('name').value;
     const feet = parseInt(document.getElementById('feet').value) || 0;
     const inches = parseInt(document.getElementById('inches').value) || 0;
@@ -85,7 +85,7 @@ function generateTile(obj) {
   const element = document.createElement('div');
   element.className = 'grid-item';
   element.innerHTML = `
-    <h3>${obj.species}</h3>
+    <h3>${obj.name || obj.species}</h3>
     <img src="images/${obj.species.toLowerCase()}.png" alt="image of ${obj.species}"/>
     `;
   return element;
